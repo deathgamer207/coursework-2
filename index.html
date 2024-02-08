@@ -1,0 +1,179 @@
+<html>
+
+<head>
+    <title>Vue.js After School</title>
+    <!-- <script src="https://unpkg.com/vue"></script> -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+    <script src="product.js"></script>
+    <link rel="stylesheet" href="school.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+</head>
+
+<body style="background-color:lightblue;">
+    <div id="app">
+        <header>
+            <center>
+                <h1 v-text="sitename"></h1>
+            </center>
+        </header>
+        <main>
+
+            <div class="search-box"><!--search bar wher you search activities-->
+                <input type="text" v-model="searchQuery">
+            </div>
+
+
+            <button class="cart-btn" v-on:click='showCheckout'>
+                {{cartItemCount}}
+                <span class="fas fa-cart-plus"></span> Checkout
+            </button>
+
+            <div id="app">
+                <div>
+                    <label for="category">Select Category:</label><!--This is a string that will store the value of the currently selected category in the select element. It is initially set to an empty string.-->
+                    <select id="category" v-model="selectedCategory">
+                        <option value="">All Categories</option>
+                        <option v-for="category in categories" :key="category" :value="category">{{ category }}</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="asbutton">
+                <button @click="isAscending = true">Sort Ascending</button>
+                <button @click="isAscending = false">Sort Descending</button>
+            </div>
+
+            <div v-if='showProduct' class="products">
+                <div class="product" v-for="(product, i) in sortedProducts" :key="product.id">
+                    <h2 v-text="product.title"></h2>
+                    <figure>
+                        <img v-bind:src="product.image" width="90" height="100">
+                    </figure>
+                    <p v-html="product.location"></p><!--The product name and price are displayed using the {{ product.name }} and {{ product.price }} syntax, which is a shorthand for the v-text directive.-->
+                    <p v-html="product.subject"></p>
+                    <p>Price: {{ product.price }}</p>
+                    <p>Location: {{ product.location }}</p>
+                    <p>Available space: {{product.availablespace - cartCount(product.id) }}</p>
+
+                    <button v-on:click='addToCart(product)' v-if='canAddToCart(product)'>Add to cart</button>
+
+                    <button disabled="disabled" v-else>Add to cart</button>
+
+                    <span v-if='product.availablespace === cartCount(product.id)'>All out!</span>
+                    <span v-else-if="product.availablespace - cartCount(product.id) < 5">
+                        Only {{product.availablespace - cartCount(product.id)}} left!
+                    </span>
+                    <span v-else>Buy now!</span>
+
+                    <div>
+                        <span v-for='n in product.rating'>★ </span>
+
+                        <span v-for='n in 5-product.rating'>☆</span>
+                    </div>
+                </div>
+            </div>
+
+            <div v-else class="checkout-page">
+                <form @submit.prevent="submitForm">
+                    <h2>Checkout</h2>
+                    <p>
+                        <strong>First Name:</strong>
+                        <!-- This input field is bound to 'firstName' in the 'order' object -->
+                        <input v-model.trim="order.firstName" type="text" pattern="[a-zA-Z]*" />
+                    </p>
+                    <p>
+                        <strong>Last Name:</strong>
+                        <!-- This input field is bound to 'lastName' in the 'order' object -->
+                        <input v-model.trim="order.lastName" type="text" pattern="[a-zA-Z]*" />
+                    </p>
+                    <p>
+                        <strong>Address:</strong>
+                        <input v-model="order.address" /> <!-- This input field is bound to 'address' in the 'order' object -->
+                    </p>
+                    <p>
+                        <strong>City:</strong>
+                        <input v-model="order.city" /> <!-- This input field is bound to 'city' in the 'order' object -->
+                    </p>
+                    <p>
+                        <strong>State:</strong>
+                        <select v-model="order.state">
+                            <option disabled value="">State</option>
+                            <option v-for="(state, key) in states" v-bind:value="state">
+                                {{key}}
+                            </option>
+                            <!-- <option v-bind:value="states.AL">AL</option>
+                            <option v-bind:value="states.AR">AR</option>
+                            <option v-bind:value="states.CA">CA</option>
+                            <option v-bind:value="states.NV">NV</option> -->
+                        </select>
+                    </p>
+                    <p>
+                        <strong>Phone No:</strong>
+                        <input v-model.number="order.phone" type="number" />
+                    </p>
+                    <p><input type="checkbox" id="gift" value="true" v-model="order.gift"
+                            v-bind:true-value="order.sendGift" v-bind:false-value="order.dontSendGift">
+                        <label for="gift">Are you 18?</label>
+                    </p>
+                    <p>
+                        <input type="radio" id="student" value="student" v-model="order.method">
+                        <label for="Student">Student</label>
+                        <input type="radio" id="parent" value="parent" v-model="order.method">
+                        <label for="parent">Parent</label>
+                    </p>
+                    <h2>Order Information</h2>
+                    <p>First Name: {{order.firstName}}</p>
+                    <p>Last Name: {{order.lastName}}</p>
+                    <p>Address: {{order.address}}</p>
+                    <p>City: {{order.city}}</p>
+                    <p>phone: {{order.phone}}</p>
+                    <p>State: {{order.state}}</p>
+                    <p>age? {{order.gift}}</p>
+                    <p>Method: {{order.method}}</p>
+                    <button type="submit">Place Order</button>
+                    <div v-if='showProduct' class="activity2">
+                        <div v-for="product in sortedProduct">
+                            <h2 v-text="product.title"></h2>
+                            <figure>
+                                <img v-bind:src="product.image">
+                            </figure>
+                            <p v-html="product.location"></p>
+                            <p v-html="product.subject"></p>
+                            <p>Price: {{product.price}}</p>
+                        </div>
+                        <button v-on:click="submitForm">Place Order</button>
+                    </div>
+                </form>
+
+                <div v-if="cart.length > 0"><!-- Display the cart only if it contains items -->
+                    <ul>
+                      <li v-for="(item, index) in cart" :key="index"><!-- Iterate over each item in the cart using v-for -->
+                        {{ item.name }} - ${{ item.price }}
+                        <button @click="removeFromCart(index)">Remove</button><!-- Button to remove the item from the cart, triggers removeFromCart method -->
+                      </li>
+                    </ul>
+                  </div>
+
+                <div class="products">
+                    <div class="product" v-for="(product, i) in cart" :key="i">
+                        <h2 v-text="product.title"></h2>
+                        <figure>
+                            <img v-bind:src="product.image" width="90" height="100">
+                        </figure>
+                        <p v-html="product.location"></p>
+                        <p v-html="product.subject"></p>
+                        <p>Price: {{ product.price }}</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+
+    <script src="main.js"></script>
+
+
+</body>
+
+</html>

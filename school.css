@@ -1,0 +1,97 @@
+.cart-icon {
+  position: relative;
+  top: -140px;
+}
+
+
+.search-container {
+  position: relative;
+  top: 30px;
+  left: 450px;
+}
+
+.icon {
+  position: relative;
+  right: 120px;
+  top: 30px;
+}
+
+/* Add a search bar container */
+.search-container {
+  margin: 20px;
+  padding: 20px;
+  background-color: lightblue;
+  border-radius: 5px;
+  width: 50%;
+  right: 50px;
+  position: relative;
+}
+
+/* Add a search bar input field */
+.search-container input[type=text] {
+  width: 65%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  border: none;
+  background-color: #f1f1f1;
+  font-size: 16px;
+  right: 24px;
+  position: relative;
+}
+
+/* Add a search bar button */
+.search-container button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 20%;
+  opacity: 0.9;
+  right: 23px;
+  position: relative;
+}
+
+/* Add hover effects to the search bar button */
+.search-container button:hover {
+  opacity: 1;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-gap: 10px;
+  padding: 10px;
+}
+
+body {
+  font-family: sans-serif;
+}
+
+.search-box{
+  display: flex;
+  justify-content: center;
+
+}
+
+
+.cart-btn{
+  margin-bottom: 1rem;
+}
+
+.products {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.product {
+  background: white;
+  border: 1px solid #ddd;
+  padding: 1rem;
+}
+.asbutton{
+  display: flex;
+  justify-content: right;
+}
