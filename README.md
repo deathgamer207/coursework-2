@@ -8,3 +8,5 @@ Initialize a Git repository and make the initial commit.
 link for website: https://deathgamer207.github.io/after-school/
 # Link for my Repository
 link for repistory:https://github.com/deathgamer207/after-school
+# Link for my AWS
+link for aws:http://afterschool-env.eba-j35timez.eu-west-2.elasticbeanstalk.com/
